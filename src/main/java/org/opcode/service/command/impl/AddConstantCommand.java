@@ -26,6 +26,8 @@ public class AddConstantCommand extends CommandExecutor {
         register.setValue(newValue);
     }
 
+
+
     @Override
     public Command getCommand(){
         return Command.ADD;

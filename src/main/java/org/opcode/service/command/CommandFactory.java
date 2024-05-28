@@ -12,6 +12,7 @@ import java.util.Map;
 public class CommandFactory {
 
     private final Map<Command, CommandExecutor> commandExecutorMap;
+    // List<CommandExecutor> allCommandExecutors;
 
     public CommandFactory(IRegisterState registerState){
         this.commandExecutorMap = new HashMap<Command, CommandExecutor>();
@@ -29,7 +30,12 @@ public class CommandFactory {
     }
 
     public CommandExecutor getCommandExecutor(String input){
-        Command command = Command.valueOf(input);
+        Command command;
+        try{
+            command = Command.valueOf(input);
+        }catch(Exception e){
+            throw new CommandNotFoundException("Invalid command string");
+        }
         if(this.commandExecutorMap.containsKey(command)){
             return commandExecutorMap.get(command);
         }

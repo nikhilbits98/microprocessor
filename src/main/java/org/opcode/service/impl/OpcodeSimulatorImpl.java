@@ -11,6 +11,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+// Responsibility - Parse input and hand it over to command executor.
 public class OpcodeSimulatorImpl implements OpcodeSimulator {
 
     private final CommandFactory commandFactory;

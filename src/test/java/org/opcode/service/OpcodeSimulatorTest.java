@@ -6,7 +6,10 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
+import org.opcode.model.Register;
 import org.opcode.model.RegisterState;
+import org.opcode.service.command.CommandFactory;
+import org.opcode.service.impl.OpcodeSimulatorImpl;
 
 @TestInstance (TestInstance.Lifecycle.PER_CLASS)
 class OpcodeSimulatorTest {
@@ -14,7 +17,14 @@ class OpcodeSimulatorTest {
 
     @BeforeEach
     void setup() {
-        //TODO: setup simulator
+        List<Register> allRegisters = new ArrayList<>();
+        allRegisters.add(new Register('A'));
+        allRegisters.add(new Register('B'));
+        allRegisters.add(new Register('C'));
+        allRegisters.add(new Register('D'));
+        RegisterState registerState = new RegisterState(allRegisters);
+        CommandFactory commandFactory = new CommandFactory(registerState);
+        this.simulator = new OpcodeSimulatorImpl(commandFactory,registerState);
     }
 
     @Test

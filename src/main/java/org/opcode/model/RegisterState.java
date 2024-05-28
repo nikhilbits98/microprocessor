@@ -11,6 +11,13 @@ public class RegisterState {
         this.registers = registers.stream().collect(Collectors.toMap(Register::getName, r -> r));
     }
 
+    public void addRegister(Register register){
+        if (!registers.containsKey(register.getName())) {
+            throw new RuntimeException(String.format("The register %s is already present", register.getName()));
+        }
+        registers.put(register.getName(), register);
+    }
+
     public void updateValue(Register register) {
         if (!registers.containsKey(register.getName())) {
             throw new RuntimeException(String.format("The register %s is not present", register.getName()));

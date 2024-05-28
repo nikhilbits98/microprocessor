@@ -1,5 +1,6 @@
 package org.opcode.service.command.impl;
 
+import org.opcode.constants.Command;
 import org.opcode.model.Register;
 import org.opcode.model.RegisterState;
 import org.opcode.service.command.CommandExecutor;
@@ -7,7 +8,7 @@ import org.opcode.utils.InputUtils;
 
 import java.util.List;
 
-public class MoveCommand implements CommandExecutor {
+public class MoveCommand extends CommandExecutor  {
 
     private final RegisterState registerState;
 
@@ -25,7 +26,7 @@ public class MoveCommand implements CommandExecutor {
     }
 
     @Override
-    public void validateArguments(List<String> args){
-        InputUtils.validateArguments(args,3);
+    public Command getCommand(){
+        return Command.MOV;
     }
 }

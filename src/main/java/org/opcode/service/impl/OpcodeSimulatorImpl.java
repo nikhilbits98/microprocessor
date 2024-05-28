@@ -28,8 +28,7 @@ public class OpcodeSimulatorImpl implements OpcodeSimulator {
                 throw new ArgumentValidationException("Invalid command input.");
             }
             CommandExecutor commandExecutor = commandFactory.getCommandExecutor(arguments.get(0));
-            commandExecutor.validateArguments(arguments);
-            commandExecutor.execute(arguments);
+            commandExecutor.executeCommands(arguments);
         }
         return registerState;
     }

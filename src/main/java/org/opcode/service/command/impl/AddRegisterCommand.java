@@ -1,5 +1,6 @@
 package org.opcode.service.command.impl;
 
+import org.opcode.constants.Command;
 import org.opcode.exceptions.ArgumentValidationException;
 import org.opcode.model.Register;
 import org.opcode.model.RegisterState;
@@ -8,7 +9,7 @@ import org.opcode.utils.InputUtils;
 
 import java.util.List;
 
-public class AddRegisterCommand implements CommandExecutor {
+public class AddRegisterCommand extends CommandExecutor  {
 
     private final RegisterState registerState;
 
@@ -27,7 +28,7 @@ public class AddRegisterCommand implements CommandExecutor {
     }
 
     @Override
-    public void validateArguments(List<String> args){
-        InputUtils.validateArguments(args,3);
+    public Command getCommand(){
+        return Command.ADR;
     }
 }

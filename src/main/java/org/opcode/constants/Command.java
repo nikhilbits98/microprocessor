@@ -4,7 +4,7 @@ public enum Command {
     SET("SET",3),
     ADR("ADR",3),
     ADD("ADD",3),
-    MOVE("MOV",3),
+    MOV("MOV",3),
     INR("INR",2),
     DCR("DCR",2),
     RST("RST",1);

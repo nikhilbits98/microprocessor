@@ -1,12 +1,17 @@
 package org.opcode.service.command;
 
 import org.opcode.constants.Command;
+import org.opcode.utils.InputUtils;
 
 import java.util.List;
 
-public interface CommandExecutor {
+public abstract class CommandExecutor {
 
-    Command getCommand();
-    void validateArguments(List<String> args);
-    void execute(List<String> args);
+    public final void executeCommands(List<String> args){
+        InputUtils.validateArguments(args, getCommand().getExceptedArgumentsCount());
+        execute(args);
+    }
+
+    protected abstract Command getCommand();
+    protected abstract void execute(List<String> args);
 }

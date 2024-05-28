@@ -1,7 +1,6 @@
 package org.opcode.service.command.impl;
 
 import org.opcode.constants.Command;
-import org.opcode.exceptions.ArgumentValidationException;
 import org.opcode.model.Register;
 import org.opcode.model.RegisterState;
 import org.opcode.service.command.CommandExecutor;
@@ -9,7 +8,7 @@ import org.opcode.utils.InputUtils;
 
 import java.util.List;
 
-public class AddConstantCommand implements CommandExecutor {
+public class AddConstantCommand extends CommandExecutor {
 
     private final RegisterState registerState;
 
@@ -24,12 +23,6 @@ public class AddConstantCommand implements CommandExecutor {
         Register register = registerState.getRegister(registerName);
         int newValue = register.getValue() + constantValue;
         register.setValue(newValue);
-    }
-
-    @Override
-    public void validateArguments(List<String> args){
-        // TODO: Remove hardcoding.
-        InputUtils.validateArguments(args, 3);
     }
 
     @Override

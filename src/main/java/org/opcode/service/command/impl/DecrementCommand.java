@@ -1,5 +1,6 @@
 package org.opcode.service.command.impl;
 
+import org.opcode.constants.Command;
 import org.opcode.model.Register;
 import org.opcode.model.RegisterState;
 import org.opcode.service.command.CommandExecutor;
@@ -8,7 +9,7 @@ import org.opcode.utils.InputUtils;
 import java.util.List;
 
 // TODO: Get rid of this.
-public class DecrementCommand implements CommandExecutor {
+public class DecrementCommand extends CommandExecutor {
 
     private final RegisterState registerState;
 
@@ -26,8 +27,7 @@ public class DecrementCommand implements CommandExecutor {
     }
 
     @Override
-    public void validateArguments(List<String> args){
-        // TODO: Remove hardcoding.
-        InputUtils.validateArguments(args, 2);
+    public Command getCommand(){
+        return Command.DCR;
     }
 }

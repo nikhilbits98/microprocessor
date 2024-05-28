@@ -1,18 +1,16 @@
 package org.opcode.service.command.impl;
 
 import org.opcode.constants.Command;
-import org.opcode.model.Register;
-import org.opcode.model.RegisterState;
+import org.opcode.repository.IRegisterState;
 import org.opcode.service.command.CommandExecutor;
-import org.opcode.utils.InputUtils;
 
 import java.util.List;
 
 public class ResetCommand extends CommandExecutor  {
 
-    private final RegisterState registerState;
+    private final IRegisterState registerState;
 
-    public ResetCommand(RegisterState registerState) {
+    public ResetCommand(IRegisterState registerState) {
         this.registerState = registerState;
     }
 

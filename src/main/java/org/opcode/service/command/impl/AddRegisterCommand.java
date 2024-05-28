@@ -1,9 +1,8 @@
 package org.opcode.service.command.impl;
 
 import org.opcode.constants.Command;
-import org.opcode.exceptions.ArgumentValidationException;
 import org.opcode.model.Register;
-import org.opcode.model.RegisterState;
+import org.opcode.repository.IRegisterState;
 import org.opcode.service.command.CommandExecutor;
 import org.opcode.utils.InputUtils;
 
@@ -11,9 +10,9 @@ import java.util.List;
 
 public class AddRegisterCommand extends CommandExecutor  {
 
-    private final RegisterState registerState;
+    private final IRegisterState registerState;
 
-    public AddRegisterCommand(RegisterState registerState) {
+    public AddRegisterCommand(IRegisterState registerState) {
         this.registerState = registerState;
     }
 

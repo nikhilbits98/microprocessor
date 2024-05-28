@@ -1,7 +1,8 @@
 package org.opcode.service.impl;
 
 import org.opcode.exceptions.ArgumentValidationException;
-import org.opcode.model.RegisterState;
+import org.opcode.repository.IRegisterState;
+import org.opcode.repository.impl.InMemoryRegisterState;
 import org.opcode.service.OpcodeSimulator;
 import org.opcode.service.command.CommandExecutor;
 import org.opcode.service.command.CommandFactory;
@@ -13,15 +14,13 @@ import java.util.stream.Collectors;
 public class OpcodeSimulatorImpl implements OpcodeSimulator {
 
     private final CommandFactory commandFactory;
-    private final RegisterState registerState;
 
-    public OpcodeSimulatorImpl(CommandFactory commandFactory, RegisterState registerState) {
-        this.commandFactory = commandFactory;
-        this.registerState = registerState;
+    public OpcodeSimulatorImpl(IRegisterState registerState) {
+        this.commandFactory = new CommandFactory(registerState);
     }
 
     @Override
-    public RegisterState execute(List<String> instructions) {
+    public void execute(List<String> instructions) {
         for(String instruction : instructions){
             List<String> arguments = Arrays.stream(instruction.split(" ")).collect(Collectors.toList());
             if(arguments.isEmpty()){
@@ -30,6 +29,5 @@ public class OpcodeSimulatorImpl implements OpcodeSimulator {
             CommandExecutor commandExecutor = commandFactory.getCommandExecutor(arguments.get(0));
             commandExecutor.executeCommands(arguments);
         }
-        return registerState;
     }
 }

@@ -2,54 +2,37 @@ package org.opcode.service.command;
 
 import org.opcode.constants.Command;
 import org.opcode.exceptions.CommandNotFoundException;
-import org.opcode.model.RegisterState;
+import org.opcode.repository.IRegisterState;
+import org.opcode.repository.impl.InMemoryRegisterState;
 import org.opcode.service.command.impl.*;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class CommandFactory {
 
-    // TODO: Command should register themselves.
-    // private Map<String, CommandExecutor> commandExecutorMap;
+    private final Map<Command, CommandExecutor> commandExecutorMap;
 
-    private final CommandExecutor addConstantCommand;
-    private final CommandExecutor addRegisterCommand;
-    private final CommandExecutor decrementCommand;
-    private final CommandExecutor incrementCommand;
-    private final CommandExecutor moveCommand;
-    private final CommandExecutor resetCommand;
-    private final CommandExecutor setCommand;
+    public CommandFactory(IRegisterState registerState){
+        this.commandExecutorMap = new HashMap<Command, CommandExecutor>();
+        this.registerCommandExecutor(new AddConstantCommand(registerState));
+        this.registerCommandExecutor(new AddRegisterCommand(registerState));
+        this.registerCommandExecutor(new DecrementCommand(registerState));
+        this.registerCommandExecutor(new IncrementCommand(registerState));
+        this.registerCommandExecutor(new MoveCommand(registerState));
+        this.registerCommandExecutor(new ResetCommand(registerState));
+        this.registerCommandExecutor(new SetCommand(registerState));
+    }
 
-    public CommandFactory(RegisterState registerState){
-        this.addConstantCommand = new AddConstantCommand(registerState);
-        this.addRegisterCommand = new AddRegisterCommand(registerState);
-        this.decrementCommand = new DecrementCommand(registerState);
-        this.incrementCommand = new IncrementCommand(registerState);
-        this.moveCommand = new MoveCommand(registerState);
-        this.resetCommand = new ResetCommand(registerState);
-        this.setCommand = new SetCommand(registerState);
+    private void registerCommandExecutor(CommandExecutor commandExecutor){
+        this.commandExecutorMap.put(commandExecutor.getCommand(), commandExecutor);
     }
 
     public CommandExecutor getCommandExecutor(String input){
         Command command = Command.valueOf(input);
-        switch(input){
-            case "SET":
-                return setCommand;
-            case "ADR":
-                return addRegisterCommand;
-            case "ADD":
-                return addConstantCommand;
-            case "MOV":
-                return moveCommand;
-            case "INR":
-                return incrementCommand;
-            case "DCR":
-                return decrementCommand;
-            case "RST":
-                return resetCommand;
-            default:
-                throw new CommandNotFoundException("Command not found for input: " + command);
-
+        if(this.commandExecutorMap.containsKey(command)){
+            return commandExecutorMap.get(command);
         }
+        throw new CommandNotFoundException("Command not found for input: " + command);
     }
 }

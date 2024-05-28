@@ -1,8 +1,8 @@
 package org.opcode.service;
 
 import java.util.List;
-import org.opcode.model.RegisterState;
+import org.opcode.repository.impl.InMemoryRegisterState;
 
 public interface OpcodeSimulator {
-    RegisterState execute(List<String> instructions);
+    void execute(List<String> instructions);
 }

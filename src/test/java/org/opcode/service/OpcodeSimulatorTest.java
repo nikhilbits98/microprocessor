@@ -7,13 +7,14 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.opcode.model.Register;
-import org.opcode.model.RegisterState;
-import org.opcode.service.command.CommandFactory;
+import org.opcode.repository.IRegisterState;
+import org.opcode.repository.impl.InMemoryRegisterState;
 import org.opcode.service.impl.OpcodeSimulatorImpl;
 
 @TestInstance (TestInstance.Lifecycle.PER_CLASS)
 class OpcodeSimulatorTest {
     private OpcodeSimulator simulator;
+    private IRegisterState registerState;
 
     @BeforeEach
     void setup() {
@@ -22,9 +23,8 @@ class OpcodeSimulatorTest {
         allRegisters.add(new Register('B'));
         allRegisters.add(new Register('C'));
         allRegisters.add(new Register('D'));
-        RegisterState registerState = new RegisterState(allRegisters);
-        CommandFactory commandFactory = new CommandFactory(registerState);
-        this.simulator = new OpcodeSimulatorImpl(commandFactory,registerState);
+        this.registerState = new InMemoryRegisterState(allRegisters);
+        this.simulator = new OpcodeSimulatorImpl(this.registerState);
     }
 
     @Test
@@ -35,11 +35,11 @@ class OpcodeSimulatorTest {
         instructions.add("SET B -2");
         instructions.add("SET C 3");
         instructions.add("SET D 4");
-        final RegisterState state = simulator.execute(instructions);
-        assertEquals(1, state.getRegister('A').getValue());
-        assertEquals(-2, state.getRegister('B').getValue());
-        assertEquals(3, state.getRegister('C').getValue());
-        assertEquals(4, state.getRegister('D').getValue());
+        simulator.execute(instructions);
+        assertEquals(1, this.registerState.getRegister('A').getValue());
+        assertEquals(-2, this.registerState.getRegister('B').getValue());
+        assertEquals(3, this.registerState.getRegister('C').getValue());
+        assertEquals(4, this.registerState.getRegister('D').getValue());
     }
 
     @Test
@@ -49,8 +49,8 @@ class OpcodeSimulatorTest {
         instructions.add("RST");
         instructions.add("SET A 11");
         instructions.add("ADD A -12");
-        final RegisterState state = simulator.execute(instructions);
-        assertEquals(-1, state.getRegister('A').getValue());
+        simulator.execute(instructions);
+        assertEquals(-1, this.registerState.getRegister('A').getValue());
     }
 
     @Test
@@ -60,8 +60,8 @@ class OpcodeSimulatorTest {
         instructions.add("SET C 5");
         instructions.add("SET D 2");
         instructions.add("ADR C D");
-        final RegisterState state = simulator.execute(instructions);
-        assertEquals(7, state.getRegister('C').getValue());
+        simulator.execute(instructions);
+        assertEquals(7, this.registerState.getRegister('C').getValue());
     }
 
     @Test
@@ -73,9 +73,9 @@ class OpcodeSimulatorTest {
         instructions.add("SET D 12");
         instructions.add("MOV B A");
         instructions.add("MOV D B");
-        final RegisterState state = simulator.execute(instructions);
-        assertEquals(5, state.getRegister('B').getValue());
-        assertEquals(5, state.getRegister('D').getValue());
+        simulator.execute(instructions);
+        assertEquals(5, this.registerState.getRegister('B').getValue());
+        assertEquals(5, this.registerState.getRegister('D').getValue());
     }
 
     @Test
@@ -86,9 +86,9 @@ class OpcodeSimulatorTest {
         instructions.add("SET B 2");
         instructions.add("INR A");
         instructions.add("DCR B");
-        final RegisterState state = simulator.execute(instructions);
-        assertEquals(6, state.getRegister('A').getValue());
-        assertEquals(1, state.getRegister('B').getValue());
+        simulator.execute(instructions);
+        assertEquals(6, this.registerState.getRegister('A').getValue());
+        assertEquals(1, this.registerState.getRegister('B').getValue());
     }
 
     @Test
@@ -100,11 +100,11 @@ class OpcodeSimulatorTest {
         instructions.add("SET C 3");
         instructions.add("SET D 4");
         instructions.add("RST");
-        final RegisterState state = simulator.execute(instructions);
-        assertEquals(0, state.getRegister('A').getValue());
-        assertEquals(0, state.getRegister('B').getValue());
-        assertEquals(0, state.getRegister('C').getValue());
-        assertEquals(0, state.getRegister('D').getValue());
+        simulator.execute(instructions);
+        assertEquals(0, this.registerState.getRegister('A').getValue());
+        assertEquals(0, this.registerState.getRegister('B').getValue());
+        assertEquals(0, this.registerState.getRegister('C').getValue());
+        assertEquals(0, this.registerState.getRegister('D').getValue());
     }
 
     @Test
@@ -116,8 +116,8 @@ class OpcodeSimulatorTest {
         instructions.add("ADD B 12");
         instructions.add("INR A");
         instructions.add("DCR B");
-        final RegisterState state = simulator.execute(instructions);
-        assertEquals(11, state.getRegister('A').getValue());
-        assertEquals(25, state.getRegister('B').getValue());
+        simulator.execute(instructions);
+        assertEquals(11, this.registerState.getRegister('A').getValue());
+        assertEquals(25, this.registerState.getRegister('B').getValue());
     }
 }

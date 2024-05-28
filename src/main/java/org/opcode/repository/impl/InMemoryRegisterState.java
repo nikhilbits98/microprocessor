@@ -1,13 +1,16 @@
-package org.opcode.model;
+package org.opcode.repository.impl;
+
+import org.opcode.model.Register;
+import org.opcode.repository.IRegisterState;
 
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class RegisterState {
+public class InMemoryRegisterState implements IRegisterState {
     private Map<Character, Register> registers;
 
-    public RegisterState(List<Register> registers) {
+    public InMemoryRegisterState(List<Register> registers) {
         this.registers = registers.stream().collect(Collectors.toMap(Register::getName, r -> r));
     }
 

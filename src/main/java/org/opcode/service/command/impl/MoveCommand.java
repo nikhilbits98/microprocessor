@@ -2,7 +2,8 @@ package org.opcode.service.command.impl;
 
 import org.opcode.constants.Command;
 import org.opcode.model.Register;
-import org.opcode.model.RegisterState;
+import org.opcode.repository.IRegisterState;
+import org.opcode.repository.impl.InMemoryRegisterState;
 import org.opcode.service.command.CommandExecutor;
 import org.opcode.utils.InputUtils;
 
@@ -10,9 +11,9 @@ import java.util.List;
 
 public class MoveCommand extends CommandExecutor  {
 
-    private final RegisterState registerState;
+    private final IRegisterState registerState;
 
-    public MoveCommand(RegisterState registerState) {
+    public MoveCommand(IRegisterState registerState) {
         this.registerState = registerState;
     }
 
